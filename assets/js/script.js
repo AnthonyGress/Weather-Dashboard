@@ -203,5 +203,20 @@ function successCallback (position) {
 function errorCallback (error) {
     console.log(error.message);
 }
+// click button on enter key in searchbox
+// Get the input field
+var input = document.getElementById("search-input");
+
+// Execute a function when the user releases a key on the keyboard
+input.addEventListener("keyup", function(event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.key === 'Enter') {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    searchBtn.click();
+  }
+});
+
 
 searchBtn.addEventListener("click", handleSearch)
