@@ -40,6 +40,7 @@ function getCoordinates(searchInput){
     lon = data.coord.lon;
     cityName = data.name;
     // pass lat and lon for next api call
+    console.log(lat, lon);
     getWeather(lat, lon);
   });
   
