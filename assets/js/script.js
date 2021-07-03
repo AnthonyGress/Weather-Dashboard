@@ -1,7 +1,7 @@
 var searchBtn = document.querySelector('.searchBtn');
 // var unlock = "./assets/key";
 var url404 =  "./404.html";
-// weatherInfo holds the JSON info from the waether API
+// weatherInfo holds the JSON info from the weather API
 var weatherInfo, cityName;
 var toggle = false;
 
@@ -72,6 +72,7 @@ function getWeather (lat, lon){
 function fillCurrentData (){
     // ****** CURRENT WEATHER ****** //
     var temp = document.querySelector("#temp");
+    var feels = document.querySelector("#feels-like");
     var wind = document.querySelector("#wind");
     var humidity = document.querySelector("#humidity");
     var uvIndex = document.querySelector("#uv-index");
@@ -102,6 +103,7 @@ function fillCurrentData (){
     // round temperature
     simpleTemp = Math.round(tempData);
     temp.textContent = simpleTemp + "\xB0 F";
+    feels.textContent = Math.round(weatherInfo.current.feels_like) + "\xB0 F";
     wind.textContent = Math.round(weatherInfo.current.wind_speed) + " MPH";
     humidity.textContent = weatherInfo.current.humidity + " %";
     uvIndex.textContent = weatherInfo.current.uvi;
@@ -114,6 +116,7 @@ function fillCurrentData (){
     else {
         uvIndex.setAttribute("class", "bg-danger bg-gradient text-white")
     }
+    // go fill the 5 day forecast next
     fillForecastData();
 }
 
@@ -124,11 +127,14 @@ function fillForecastData (){
     if (toggle == true){
         // reset 5-day forecast so they don't append over prev query
         for (let i = 0; i < forecastEL.children.length; i++) {
+            // target acquired
+            //TODO refactor to use .children?
             var dateEl = document.querySelector(".date");
             var iconEl = document.querySelector(".icon");
             var tempEl = document.querySelector(".temp");
             var windEl = document.querySelector(".wind");
             var humidityEl = document.querySelector(".humidity");
+            // delete, destroy, burn, remove
             dateEl.remove();
             iconEl.remove();
             tempEl.remove();
@@ -137,7 +143,7 @@ function fillForecastData (){
         }
     }
     for (let i = 0; i < forecastEL.children.length; i++) {
-        // create the elements
+        // create the elements to be displayed
         var tempEl = document.createElement("div");
         var windEl = document.createElement("div");
         var humidityEl = document.createElement("div");
@@ -158,7 +164,6 @@ function fillForecastData (){
         tempEl.innerHTML = "Temp: " + Math.round(weatherInfo.daily[i+1].temp.day) + "\xB0 F";
         windEl.innerHTML = "Wind: " + Math.round(weatherInfo.daily[i+1].wind_speed) + " MPH";
         humidityEl.innerHTML = "Humidity: " + Math.round(weatherInfo.daily[i+1].humidity) + " %";
-        
         // append to page
         forecastEL.children[i].appendChild(dateEl);
         forecastEL.children[i].appendChild(iconEl);
@@ -170,7 +175,7 @@ function fillForecastData (){
     }
 };
 
-
+// convert unix timestamp from API into other arbitrary human time
 function timeConverter(UNIX_timestamp){
     var a = new Date(UNIX_timestamp * 1000);
     var year = a.getFullYear();
@@ -179,11 +184,12 @@ function timeConverter(UNIX_timestamp){
     var formattedDate = month + '/' + date + '/' + year;
     return formattedDate;
   }
-//TODO Get current location
+//TODO Get current location from browser
 function getCurrentLocation (){
     console.log("requesting device location");
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
 }
+// grab coords from current location if given permission & location is available
 function successCallback (position) {
     var lat = position.coords.latitude;
     var lon = position.coords.longitude;
@@ -193,12 +199,9 @@ function successCallback (position) {
     getWeather(lat, lon)
     console.log(lat, lon);
 }
-
+// handle errors for get current location
 function errorCallback (error) {
     console.log(error.message);
 }
 
-
-//testing current location
-// searchBtn.addEventListener("click", getCurrentLocation)
 searchBtn.addEventListener("click", handleSearch)
