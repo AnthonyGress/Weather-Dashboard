@@ -191,5 +191,5 @@ function errorCallback (error) {
 
 
 //testing current location
-// searchBtn.addEventListener("click", getCurrentLocation)
-searchBtn.addEventListener("click", handleSearch)
+searchBtn.addEventListener("click", getCurrentLocation)
+// searchBtn.addEventListener("click", handleSearch)
