@@ -3,6 +3,7 @@ var searchBtn = document.querySelector('.searchBtn');
 var url404 =  "./404.html";
 // weatherInfo holds the JSON info from the waether API
 var weatherInfo, cityName;
+var toggle = false;
 
 function handleSearch (){
     // get the city input
@@ -54,21 +55,24 @@ function getWeather (lat, lon){
     .then(function (data) {
       weatherInfo = data;
       console.log(weatherUrl);
-      fillData();
+      fillCurrentData();
     });
 };
 
-function fillData (){
+function fillCurrentData (){
+    // ****** CURRENT WEATHER ****** //
     var temp = document.querySelector("#temp");
     var wind = document.querySelector("#wind");
     var humidity = document.querySelector("#humidity");
     var uvIndex = document.querySelector("#uv-index");
     var cityNameEl = document.querySelector(".city");
     var currentIconEl = document.querySelector("#current-icon");
-    console.log(currentIconEl);
     var currentIconCode = weatherInfo.current.weather[0].icon;
     var iconUrl = "http://openweathermap.org/img/wn/" + currentIconCode + "@2x.png";
-    // get current date using js
+    // TODO ADD MAP
+    var mapEl = document.querySelector("#map");
+    var mapUrl = "https://tile.openweathermap.org/map/precipitation_new/1/1/1.png?appid=" + apiKey;
+    // TODO make its own function > get current date using js
     let currentDate = new Date();
     let cDay = currentDate.getDate();
     let cMonth = currentDate.getMonth() + 1;
@@ -81,6 +85,7 @@ function fillData (){
     todayEl.innerHTML = " " + cMonth + "/" + cDay + "/" + cYear;
     cityNameEl.appendChild(todayEl);
     currentIconEl.setAttribute("src", iconUrl)
+    mapEl.setAttribute("src", iconUrl)
     // append current weather info to the page
     var tempData = weatherInfo.current.temp;
     console.log(tempData);
@@ -99,10 +104,28 @@ function fillData (){
     else {
         uvIndex.setAttribute("class", "bg-danger bg-gradient text-white")
     }
+    fillForecastData();
+}
+
+function fillForecastData (){
     console.log(weatherInfo);
     var forecastEL = document.querySelector(".forecast-wrapper");
-    // loop through the 5 day forecast elements and dynamically create the containers fill it with the corresponding data
-    // TODO fix clear on new search
+    // if we have already completed the for loop once and flipped the toggle switch
+    if (toggle == true){
+        // reset 5-day forecast so they don't append over prev query
+        for (let i = 0; i < forecastEL.children.length; i++) {
+            var dateEl = document.querySelector(".date");
+            var iconEl = document.querySelector(".icon");
+            var tempEl = document.querySelector(".temp");
+            var windEl = document.querySelector(".wind");
+            var humidityEl = document.querySelector(".humidity");
+            dateEl.remove();
+            iconEl.remove();
+            tempEl.remove();
+            windEl.remove();
+            humidityEl.remove();
+        }
+    }
     for (let i = 0; i < forecastEL.children.length; i++) {
         // create the elements
         var tempEl = document.createElement("div");
@@ -132,8 +155,11 @@ function fillData (){
         forecastEL.children[i].appendChild(tempEl);
         forecastEL.children[i].appendChild(windEl);
         forecastEL.children[i].appendChild(humidityEl);
+        // toggle true to signal that the loop has been run before
+        toggle = true;
     }
 };
+
 
 function timeConverter(UNIX_timestamp){
     var a = new Date(UNIX_timestamp * 1000);
@@ -143,7 +169,7 @@ function timeConverter(UNIX_timestamp){
     var formattedDate = month + '/' + date + '/' + year;
     return formattedDate;
   }
-
+//TODO Get current location
 function getCurrentLocation (){
     console.log("requesting device location");
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
@@ -152,9 +178,11 @@ function successCallback (position) {
     console.log("here");
     console.log(position.coords.latitude); // 43.2132209
     console.log(position.coords.longitude); // 27.9571503
-    lat = position.coords.latitude;
-    lon = position.coords.longitude;
+    var lat = position.coords.latitude;
+    var lon = position.coords.longitude;
+    console.log(lat, lon);
     //TODO Fill make api call with current location data
+    getWeather(lat, lon)
 }
 
 function errorCallback (error) {
