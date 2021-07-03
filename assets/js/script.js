@@ -1,5 +1,5 @@
 var searchBtn = document.querySelector('.searchBtn');
-var apiKey = "";
+// var apiKey = "./assets/key";
 var url404 =  "./404.html";
 // weatherInfo holds the JSON info from the waether API
 var weatherInfo, cityName;
@@ -94,17 +94,16 @@ function fillData (){
         uvIndex.setAttribute("class", "btn-success btn-gradient text-white")
     }
     else if (weatherInfo.current.uvi > 2){
-        uvIndex.setAttribute("class", "btn-warning btn-gradient text-white")
+        uvIndex.setAttribute("class", "bg-warning bg-gradient text-white")
     }
     else {
-        uvIndex.setAttribute("class", "btn-danger btn-gradient text-white")
+        uvIndex.setAttribute("class", "bg-danger bg-gradient text-white")
     }
     console.log(weatherInfo);
     var forecastEL = document.querySelector(".forecast-wrapper");
     // loop through the 5 day forecast elements and dynamically create the containers fill it with the corresponding data
     // TODO fix clear on new search
     for (let i = 0; i < forecastEL.children.length; i++) {
-        console.log("looping " + i);
         // create the elements
         var tempEl = document.createElement("div");
         var windEl = document.createElement("div");
@@ -113,7 +112,6 @@ function fillData (){
         var dateEl = document.createElement("div");
         var iconCode = weatherInfo.daily[i+1].weather[0].icon;
         var unixDate = weatherInfo.daily[i+1].dt;
-        console.log(unixDate);
         var iconUrl = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png";
         // assign classes
         dateEl.setAttribute("class", "date");
@@ -164,6 +162,6 @@ function errorCallback (error) {
 }
 
 
-
-searchBtn.addEventListener("click", getCurrentLocation)
-// searchBtn.addEventListener("click", handleSearch)
+//testing current location
+// searchBtn.addEventListener("click", getCurrentLocation)
+searchBtn.addEventListener("click", handleSearch)
