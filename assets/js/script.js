@@ -1,5 +1,5 @@
 var searchBtn = document.querySelector('.searchBtn');
-var apiKey = "ef44fd3a3b66d837bba10c28d22eab9a";
+var apiKey = "";
 var url404 =  "./404.html";
 // weatherInfo holds the JSON info from the waether API
 var weatherInfo, cityName;
@@ -102,6 +102,7 @@ function fillData (){
     console.log(weatherInfo);
     var forecastEL = document.querySelector(".forecast-wrapper");
     // loop through the 5 day forecast elements and dynamically create the containers fill it with the corresponding data
+    // TODO fix clear on new search
     for (let i = 0; i < forecastEL.children.length; i++) {
         console.log("looping " + i);
         // create the elements
@@ -138,18 +139,31 @@ function fillData (){
 
 function timeConverter(UNIX_timestamp){
     var a = new Date(UNIX_timestamp * 1000);
-    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     var year = a.getFullYear();
     var month = a.getMonth()+1;
     var date = a.getDate();
-    var hour = a.getHours();
-    var min = a.getMinutes();
-    var sec = a.getSeconds();
     var formattedDate = month + '/' + date + '/' + year;
     return formattedDate;
   }
 
+function getCurrentLocation (){
+    console.log("requesting device location");
+    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+}
+function successCallback (position) {
+    console.log("here");
+    console.log(position.coords.latitude); // 43.2132209
+    console.log(position.coords.longitude); // 27.9571503
+    lat = position.coords.latitude;
+    lon = position.coords.longitude;
+    //TODO Fill make api call with current location data
+}
+
+function errorCallback (error) {
+    console.log(error.message);
+}
 
 
 
-searchBtn.addEventListener("click", handleSearch)
+searchBtn.addEventListener("click", getCurrentLocation)
+// searchBtn.addEventListener("click", handleSearch)
