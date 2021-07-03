@@ -5,6 +5,13 @@ var url404 =  "./404.html";
 var weatherInfo, cityName;
 var toggle = false;
 
+function init (){
+    // try to autopopulate screen when user arrives if they allow location
+    // for a better ux
+    getCurrentLocation();
+}
+init();
+
 function handleSearch (){
     // get the city input
     var searchInput = document.querySelector('#search-input').value.toLowerCase().trim();
@@ -191,5 +198,5 @@ function errorCallback (error) {
 
 
 //testing current location
-searchBtn.addEventListener("click", getCurrentLocation)
-// searchBtn.addEventListener("click", handleSearch)
+// searchBtn.addEventListener("click", getCurrentLocation)
+searchBtn.addEventListener("click", handleSearch)
