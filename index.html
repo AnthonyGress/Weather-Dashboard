@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- pull in bootstrap css -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <!-- <link rel="stylesheet" href="./assets/css/style.css"> -->
+    <link rel="stylesheet" href="./assets/css/style.css">
     <title>Weather Dash</title>
 </head>
 <body>
     <header class="text-center">
-        <h1 class="my-4">Weather Dash</h1>
+        <h1 class="py-3">Weather Dash</h1>
     </header>
     <main class="container">
         <div class="row">
@@ -22,7 +22,7 @@
                         <input type="email" class="form-control" id="search-input" placeholder="Orlando">
                         <div class="d-grid mt-2"><button class="btn btn-primary searchBtn" type="button">Search</button></div>
                      </div>
-                     <div class="border-top border-2 border-dark mt-3"></div>
+                     <div class="border-top border-2 border-secondary mt-3"></div>
                     <div class="text-center my-3" id="history">history</div>
             </aside>
             <section id="city-wrapper" class="col-lg-9">
@@ -31,20 +31,20 @@
                     <div class="col-2"><img class="mx-auto d-block" id="current-icon" alt="" ></div>
                    <!-- add map -->
                     <!-- <img src="" alt="rain map" id="map"> -->
-                    <span id="temp-wrap" class="py-2">Temp: <span id="temp"></span></span>
-                    <span id="feels-wrap" class="py-2">Feels like: <span id="feels-like"></span></span>
-                    <span id="wind-wrap" class="py-2">Wind: <span id="wind"></span></span>
-                    <span id="humidity-wrap" class="py-2">Humidity: <span id="humidity"></span></span>
-                    <span id="uv-index-wrap" class="py-2">UV Index: <span class="rounded p-4 inline-block" id="uv-index"></span></span>
+                    <span id="temp-wrap" class="py-1">Temp: <span id="temp"></span></span>
+                    <span id="feels-wrap" class="py-1">Feels like: <span id="feels-like"></span></span>
+                    <span id="wind-wrap" class="py-1">Wind: <span id="wind"></span></span>
+                    <span id="humidity-wrap" class="py-1">Humidity: <span id="humidity"></span></span>
+                    <span id="uv-index-wrap" class="my-1">UV Index:  <span class="" id="uv-index"></span></span>
                 </div>
                 <section id="5-day" class="pt-3">
                     <h2>5-Day Forecast:</h2>
-                        <div class="row forecast-wrapper">
-                            <div class="col-md day0"></div>
-                            <div class="col-md day1"></div>
-                            <div class="col-md day2"></div>
-                            <div class="col-md day3"></div>
-                            <div class="col-md day4"></div>
+                        <div class="row forecast-wrapper invisible text-center">
+                            <div class="col-md card bg-dark ms-3 w-auto day0"></div>
+                            <div class="col-md card bg-dark ms-3 w-auto day1"></div>
+                            <div class="col-md card bg-dark ms-3 w-auto day2"></div>
+                            <div class="col-md card bg-dark ms-3 w-auto day3"></div>
+                            <div class="col-md card bg-dark ms-3 w-auto day4"></div>
                         </div>
                 </section>
             </section>

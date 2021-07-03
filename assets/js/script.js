@@ -26,8 +26,9 @@ function getCoordinates(searchInput){
     fetch(coordinateUrl)
   .then(function (response) {
     if (response.status == 404){
-        document.location.assign(url404);
+        //document.location.assign(url404);
         // redirect
+        alert("No city named " + searchInput + " found.")
     }
     else{
         return response.json();
@@ -109,6 +110,7 @@ function fillCurrentData (){
     uvIndex.textContent = weatherInfo.current.uvi;
     if (weatherInfo.current.uvi < 2){
         uvIndex.setAttribute("class", "btn-success btn-gradient text-white")
+
     }
     else if (weatherInfo.current.uvi > 2){
         uvIndex.setAttribute("class", "bg-warning bg-gradient text-white")
@@ -153,7 +155,7 @@ function fillForecastData (){
         var unixDate = weatherInfo.daily[i+1].dt;
         var iconUrl = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png";
         // assign classes
-        dateEl.setAttribute("class", "date");
+        dateEl.setAttribute("class", "date fw-bold");
         iconEl.setAttribute("class", "icon");
         tempEl.setAttribute("class", "temp");
         windEl.setAttribute("class", "wind");
@@ -165,6 +167,7 @@ function fillForecastData (){
         windEl.innerHTML = "Wind: " + Math.round(weatherInfo.daily[i+1].wind_speed) + " MPH";
         humidityEl.innerHTML = "Humidity: " + Math.round(weatherInfo.daily[i+1].humidity) + " %";
         // append to page
+        forecastEL.classList.remove("invisible");
         forecastEL.children[i].appendChild(dateEl);
         forecastEL.children[i].appendChild(iconEl);
         forecastEL.children[i].appendChild(tempEl);
@@ -206,7 +209,6 @@ function errorCallback (error) {
 // click button on enter key in searchbox
 // Get the input field
 var input = document.getElementById("search-input");
-
 // Execute a function when the user releases a key on the keyboard
 input.addEventListener("keyup", function(event) {
   // Number 13 is the "Enter" key on the keyboard

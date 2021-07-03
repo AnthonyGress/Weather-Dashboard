@@ -1,3 +1,27 @@
-/* #uv-index {
+:root{
+    --bg-color: #181A1B;
+    --font-color: #D1CDC8;
+}
 
-} */
+header {
+    border-radius: 4px;
+    background-image: linear-gradient(to bottom right, rgba(153, 0, 255, 0.849), rgba(86, 2, 243, 0.884));
+}
+
+html, body {
+    background-color: var(--bg-color);
+    color: var(--font-color);
+}
+
+#uv-index-wrap{
+}
+
+#uv-index {
+    border-radius: 4px;
+    padding: .2rem .6rem;
+    margin-left: .2rem;
+}
+
+.card {
+    padding: 1%;
+}
