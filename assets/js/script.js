@@ -64,7 +64,7 @@ function getWeather (lat, lon){
     // go into returned object with all the weather data
     .then(function (data) {
       weatherInfo = data;
-      console.log(weatherUrl);
+      console.log(weatherInfo);
       fillCurrentData();
     });
 };
@@ -95,7 +95,7 @@ function fillCurrentData (){
     todayEl.innerHTML = " " + cMonth + "/" + cDay + "/" + cYear;
     cityNameEl.appendChild(todayEl);
     currentIconEl.setAttribute("src", iconUrl)
-    mapEl.setAttribute("src", iconUrl)
+    //TODO add map mapEl.setAttribute("src", iconUrl)
     // append current weather info to the page
     var tempData = weatherInfo.current.temp;
     console.log(tempData);
@@ -187,7 +187,7 @@ function getCurrentLocation (){
 function successCallback (position) {
     var lat = position.coords.latitude;
     var lon = position.coords.longitude;
-    // format lat and lon to 4 decimals
+    // TODO format lat and lon to 4 decimals
     lat.toLocaleString(undefined, { minimumFractionDigits: 4 })
     lon.toLocaleString(undefined, { minimumFractionDigits: 4 })
     getWeather(lat, lon)
