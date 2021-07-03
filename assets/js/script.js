@@ -185,14 +185,13 @@ function getCurrentLocation (){
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
 }
 function successCallback (position) {
-    console.log("here");
-    console.log(position.coords.latitude); // 43.2132209
-    console.log(position.coords.longitude); // 27.9571503
     var lat = position.coords.latitude;
     var lon = position.coords.longitude;
-    console.log(lat, lon);
-    //TODO Fill make api call with current location data
+    // format lat and lon to 4 decimals
+    lat.toFixed(4);
+    lon.toFixed(4);
     getWeather(lat, lon)
+    console.log(lat, lon);
 }
 
 function errorCallback (error) {
