@@ -1,5 +1,5 @@
 var searchBtn = document.querySelector('.searchBtn');
-// var apiKey = "./assets/key";
+// var unlock = "./assets/key";
 var url404 =  "./404.html";
 // weatherInfo holds the JSON info from the waether API
 var weatherInfo, cityName;
@@ -21,7 +21,7 @@ function handleSearch (){
 
 function getCoordinates(searchInput){
     var lat, lon;
-    var coordinateUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchInput + "&appid=" + apiKey;
+    var coordinateUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchInput + "&appid=" + unlock;
 //get lat and long coordinates of city from this api call
     fetch(coordinateUrl)
   .then(function (response) {
@@ -46,7 +46,9 @@ function getCoordinates(searchInput){
 };
 
 function getWeather (lat, lon){
-    var weatherUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial" + "&exclude=alerts" + "&appid=" + apiKey;
+    console.log("getting weather data for coords");
+    console.log(lat, lon);
+    var weatherUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial" + "&exclude=alerts" + "&appid=" + unlock;
     fetch(weatherUrl)
     .then(function (response) {
       if (response.status == 404){
@@ -78,7 +80,7 @@ function fillCurrentData (){
     var iconUrl = "http://openweathermap.org/img/wn/" + currentIconCode + "@2x.png";
     // TODO ADD MAP
     var mapEl = document.querySelector("#map");
-    var mapUrl = "https://tile.openweathermap.org/map/precipitation_new/1/1/1.png?appid=" + apiKey;
+    var mapUrl = "https://tile.openweathermap.org/map/precipitation_new/1/1/1.png?appid=" + unlock;
     // TODO make its own function > get current date using js
     let currentDate = new Date();
     let cDay = currentDate.getDate();
