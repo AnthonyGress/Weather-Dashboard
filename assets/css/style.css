@@ -4,7 +4,7 @@
 }
 
 header {
-    border-radius: 4px;
+    border-radius: 0 0 4px 4px;
     background-image: linear-gradient(to bottom right, rgba(153, 0, 255, 0.849), rgba(86, 2, 243, 0.884));
 }
 

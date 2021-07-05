@@ -1,39 +1,113 @@
 var searchBtn = document.querySelector('.searchBtn');
-// var unlock = "./assets/key";
-var url404 =  "./404.html";
-// weatherInfo holds the JSON info from the weather API
-var weatherInfo, cityName;
+var clearBtn = document.querySelector('.clearBtn');
+// weatherInfo holds the JSON response from the weather API
+var weatherInfo, cityName, historyBtn;
+var historyEl = document.querySelector("#history");
 var toggle = false;
-
-function init (){
-    // try to autopopulate screen when user arrives if they allow location
-    // for a better ux
-    getCurrentLocation();
-}
+var searchHistory = JSON.parse(localStorage.getItem("searchHistory"));
+var input = document.getElementById("search-input");
 init();
 
-function handleSearch (){
-    // get the city input
-    var searchInput = document.querySelector('#search-input').value.toLowerCase().trim();
-    getCoordinates(searchInput)
+function init (){
+    // try to autopopulate current weather when user arrives if they allow location access
+    // better ux than blank site waiting to be filled with info
+    getCurrentLocation();
+    getSearchHistory();
+};
 
+function getSearchHistory () {
+    if (searchHistory == null){
+        console.log("There is no search history data in local storage, creating a blank array");
+        searchHistory = [];
+        }
+    // if there is an array, run the function
+     else{
+            handleFillHistory();
+        }
+};
+
+function handleFillHistory (){
+    console.log(searchHistory);
+    for (let i = 0; i < searchHistory.length && i < 8; i++) {
+        var buttonDiv = document.createElement("div")
+        var buttonEl = document.createElement("button");
+        buttonDiv.classList.add("d-grid", "mt-2");
+        buttonEl.classList.add("btn", "btn-secondary", "historyBtn");
+        buttonEl.dataset.city = searchHistory[i];
+        // TODO capitalize every word here for user readability
+        buttonEl.textContent = searchHistory[i];
+        historyEl.append(buttonDiv);
+        buttonDiv.append(buttonEl);
+    }
+    historyBtn = document.querySelector('.historyBtn');
+    
+};
+
+function handleAppendSingle(searchInput){
+    var buttonDiv = document.createElement("div")
+    var buttonEl = document.createElement("button");
+    buttonDiv.classList.add("d-grid", "mt-2");
+    buttonEl.classList.add("btn", "btn-secondary", "historyBtn");
+    buttonEl.dataset.city = searchInput;
+    buttonEl.textContent = searchInput;
+
+    if (searchHistory.length >= 8){
+        console.log("add to beginning");
+        // add button to the top
+        historyEl.prepend(buttonDiv);
+        buttonDiv.prepend(buttonEl);
+        // remove last search history button to keep max 8 at all times
+        historyEl.removeChild(historyEl.lastElementChild);
+    }
+    else {
+        console.log("history less than 8");
+        historyEl.append(buttonDiv);
+        buttonDiv.append(buttonEl);
+    }
+}
+
+function handleSearchHistoryClick (event){
+   // get button clicked
+   var buttonClicked = event.target;
+   // get data-city of clicked button
+   var searchHistoryInput = buttonClicked.dataset.city;
+   // if they clicked an actual button
+   if (searchHistoryInput !== undefined) {
+       getCoordinates(searchHistoryInput);
+   }
+};
+
+function handleSearch (){
+    // if searchbox is not empty
+    var searchInput = document.querySelector('#search-input').value.trim();
+    if (searchInput != ""){
+        // get the city input
+        getCoordinates(searchInput);
+        // reset input text on search
+        input.value = "";
+    }
+    // searchbox is empty
+    else {
+        alert('Enter a city')
+    }
+    
 };
 
 function getCoordinates(searchInput){
     var lat, lon;
     var coordinateUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchInput + "&appid=" + unlock;
-//get lat and long coordinates of city from this api call
+// get lat and long coordinates of city from this api call
     fetch(coordinateUrl)
   .then(function (response) {
     if (response.status == 404){
-        //document.location.assign(url404);
-        // redirect
+        // tell user the city that they typed was not found
+        //TODO make this a modal
         alert("No city named " + searchInput + " found.")
+        return;
     }
     else{
         return response.json();
     }
-
   })
   // go into returned object and pull the lat and long, set them to variables
   .then(function (data) {
@@ -41,15 +115,38 @@ function getCoordinates(searchInput){
     lon = data.coord.lon;
     cityName = data.name;
     // pass lat and lon for next api call
-    console.log(lat, lon);
     getWeather(lat, lon);
+    searchInput = capitalFormat(searchInput);
+    // since request was successful and city was found, add to search history
+    // ********* ADD TO SEARCH HISTORY ************ //
+    // if the search is already in the search history, don't add it
+    if (searchHistory.includes(searchInput)){
+        // do nothing
+    }
+    // if city is not in the search history, push this search to the array
+    else {
+            console.log(searchInput);
+            if (searchHistory.length >= 8){
+                searchHistory.unshift(searchInput);
+                console.log("add to beginning");
+                // remove last item from array
+                searchHistory.pop();
+            }
+            else {
+                searchHistory.push(searchInput);
+            }
+            console.log(searchHistory);
+           // new function to add a single element so that the whole list array doesn't get rewritten to page
+           handleAppendSingle(searchInput);
+       }
+   //write event array to local storage
+   localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+
   });
   
 };
 
 function getWeather (lat, lon){
-    console.log("getting weather data for coords");
-    console.log(lat, lon);
     var weatherUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial" + "&exclude=alerts" + "&appid=" + unlock;
     fetch(weatherUrl)
     .then(function (response) {
@@ -65,7 +162,6 @@ function getWeather (lat, lon){
     // go into returned object with all the weather data
     .then(function (data) {
       weatherInfo = data;
-      console.log(weatherInfo);
       fillCurrentData();
     });
 };
@@ -90,17 +186,16 @@ function fillCurrentData (){
     let cMonth = currentDate.getMonth() + 1;
     let cYear = currentDate.getFullYear();
     // append city name to page
-    cityNameEl.textContent = cityName;
+    cityNameEl.textContent = "Today in " + cityName;
     // create span to fill with current date
     var todayEl = document.createElement("span");
     // use the date function in JS to set current date and append to page
-    todayEl.innerHTML = " " + cMonth + "/" + cDay + "/" + cYear;
+    todayEl.innerHTML = " (" + cMonth + "/" + cDay + "/" + cYear + ")";
     cityNameEl.appendChild(todayEl);
     currentIconEl.setAttribute("src", iconUrl)
     //TODO add map mapEl.setAttribute("src", iconUrl)
     // append current weather info to the page
     var tempData = weatherInfo.current.temp;
-    console.log(tempData);
     // round temperature
     simpleTemp = Math.round(tempData);
     temp.textContent = simpleTemp + "\xB0 F";
@@ -123,7 +218,6 @@ function fillCurrentData (){
 }
 
 function fillForecastData (){
-    console.log(weatherInfo);
     var forecastEL = document.querySelector(".forecast-wrapper");
     // if we have already completed the for loop once and flipped the toggle switch
     if (toggle == true){
@@ -161,11 +255,18 @@ function fillForecastData (){
         windEl.setAttribute("class", "wind");
         humidityEl.setAttribute("class", "humidity");
         // assign values
-        dateEl.innerHTML = timeConverter(unixDate);
+        if (i == 0){
+            dateEl.innerText = "Tomorrow ";
+
+        }
+        else{
+        dateEl.innerText = timeConverter(unixDate);
+        }
+
         iconEl.innerHTML = '<img src=' + iconUrl + ">";
-        tempEl.innerHTML = "Temp: " + Math.round(weatherInfo.daily[i+1].temp.day) + "\xB0 F";
-        windEl.innerHTML = "Wind: " + Math.round(weatherInfo.daily[i+1].wind_speed) + " MPH";
-        humidityEl.innerHTML = "Humidity: " + Math.round(weatherInfo.daily[i+1].humidity) + " %";
+        tempEl.innerText = "Temp: " + Math.round(weatherInfo.daily[i+1].temp.day) + "\xB0 F";
+        windEl.innerText = "Wind: " + Math.round(weatherInfo.daily[i+1].wind_speed) + " MPH";
+        humidityEl.innerText = "Humidity: " + Math.round(weatherInfo.daily[i+1].humidity) + " %";
         // append to page
         forecastEL.classList.remove("invisible");
         forecastEL.children[i].appendChild(dateEl);
@@ -173,7 +274,7 @@ function fillForecastData (){
         forecastEL.children[i].appendChild(tempEl);
         forecastEL.children[i].appendChild(windEl);
         forecastEL.children[i].appendChild(humidityEl);
-        // toggle true to signal that the loop has been run before
+        // toggle this switch to true which signals that the for loop has been run before
         toggle = true;
     }
 };
@@ -194,12 +295,12 @@ function getCurrentLocation (){
 }
 // grab coords from current location if given permission & location is available
 function successCallback (position) {
-    var lat = position.coords.latitude;
-    var lon = position.coords.longitude;
+    var lat = parseFloat(position.coords.latitude);
+    var lon = parseFloat(position.coords.longitude);
     // TODO format lat and lon to 4 decimals
     lat.toLocaleString(undefined, { minimumFractionDigits: 4 })
     lon.toLocaleString(undefined, { minimumFractionDigits: 4 })
-    getWeather(lat, lon)
+    getWeather(lat, lon);
     console.log(lat, lon);
 }
 // handle errors for get current location
@@ -207,18 +308,42 @@ function errorCallback (error) {
     console.log(error.message);
 }
 // click button on enter key in searchbox
-// Get the input field
-var input = document.getElementById("search-input");
-// Execute a function when the user releases a key on the keyboard
-input.addEventListener("keyup", function(event) {
+// Execute a function when the user presses a key on the keyboard while typing in the searchbox
+input.addEventListener("keydown", function(event) {
   // Number 13 is the "Enter" key on the keyboard
   if (event.key === 'Enter') {
     // Cancel the default action, if needed
     event.preventDefault();
     // Trigger the button element with a click
     searchBtn.click();
+    // reset input text on search
+    input.value = "";
+  }
+  // they are typing something and did not hit enter
+  else {
+    searchBtn.disabled = false;
   }
 });
+// formats input to capitalize the first letter of each word in the city. i.e new york -> New York
+function capitalFormat (searchInput){
+    var cap = searchInput.split(" ");
+    for (let i = 0; i < cap.length; i++) {
+     cap[i] = cap[i][0].toUpperCase() + cap[i].substr(1);
+    }
+    console.log(cap.join(' '));
+    return(cap.join(' '));
+}
+
+function handleClear () {
+    // clear savedEvent array
+    searchHistory = [];
+    // save to local storage
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+    // refresh page to show changes immediately
+    location.reload();
+};
 
 
 searchBtn.addEventListener("click", handleSearch)
+clearBtn.addEventListener("click", handleClear)
+historyEl.addEventListener("click", handleSearchHistoryClick)

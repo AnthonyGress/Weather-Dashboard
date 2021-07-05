@@ -19,11 +19,14 @@
                 <h2>Search for a City:</h2>
                     <div class="search-box">
                         <label for="search-input" class="form-label"></label>
-                        <input type="email" class="form-control" id="search-input" placeholder="Orlando">
-                        <div class="d-grid mt-2"><button class="btn btn-primary searchBtn" type="button">Search</button></div>
+                        <input type="text" class="form-control" id="search-input" list="datalist" placeholder="Orlando">
+                        <div class="d-grid mt-2"><button class="btn btn-primary searchBtn" type="button" disabled>Search</button></div>
                      </div>
                      <div class="border-top border-2 border-secondary mt-3"></div>
-                    <div class="text-center my-3" id="history">history</div>
+                     <h4 class=" text-center my-3 pb-2">Search History</h4>
+                    <div class="text-center my-3" id="history"></div>
+                    <div class="d-grid mt-2"><button class="btn btn-primary clearBtn" type="button">Clear History</button></div>
+
             </aside>
             <section id="city-wrapper" class="col-lg-9">
                     <h2 class="city"></h2>
@@ -51,6 +54,7 @@
         </div>
     </main>
     <script src="./assets/js/key.js"></script>
+    <script src="./assets/js/usaCities.js"></script>
     <script src="./assets/js/script.js"></script>
 </body>
 </html>
