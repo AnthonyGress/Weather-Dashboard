@@ -344,7 +344,6 @@ function useCurrentLocation(lat, lon){
     // add current location to search history
     if (searchHistory.includes(cityName)){
         // do nothing
-        break;
     }
     else {
         if (searchHistory.length >= 8){
