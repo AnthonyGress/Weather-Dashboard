@@ -3,7 +3,6 @@ var clearBtn = document.querySelector('.clearBtn');
 // weatherInfo holds the JSON response from the weather API
 var weatherInfo, cityName, historyBtn;
 var historyEl = document.querySelector("#history");
-var cityNameEl = document.querySelector(".city");
 var toggle = false;
 var searchHistory = JSON.parse(localStorage.getItem("searchHistory"));
 var input = document.getElementById("search-input");
@@ -175,6 +174,7 @@ function fillCurrentData (){
     var wind = document.querySelector("#wind");
     var humidity = document.querySelector("#humidity");
     var uvIndex = document.querySelector("#uv-index");
+    var cityNameEl = document.querySelector(".city");
     var currentIconEl = document.querySelector("#current-icon");
     var currentIconCode = weatherInfo.current.weather[0].icon;
     var iconUrl = "http://openweathermap.org/img/wn/" + currentIconCode + "@2x.png";
@@ -310,14 +310,14 @@ function errorCallback (error) {
 }
 
 function useCurrentLocation(lat, lon){
-    apiUrl = "api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + unlock;
+    apiUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + unlock;
     // make api call
     fetch(apiUrl)
   .then(function (response) {
     if (response.status == 404){
         // tell user the city that they typed was not found
         //TODO make this a modal
-        alert("No city named found.")
+        alert("No city found.")
         return;
     }
     else{
