@@ -53,7 +53,6 @@ function handleAppendSingle(searchInput){
     buttonEl.textContent = searchInput;
 
     if (searchHistory.length >= 8){
-        console.log("add to beginning");
         // add button to the top
         historyEl.prepend(buttonDiv);
         buttonDiv.prepend(buttonEl);
@@ -61,7 +60,7 @@ function handleAppendSingle(searchInput){
         historyEl.removeChild(historyEl.lastElementChild);
     }
     else {
-        console.log("history less than 8");
+        // add button to bottom
         historyEl.append(buttonDiv);
         buttonDiv.append(buttonEl);
     }
@@ -129,12 +128,13 @@ function getCoordinates(searchInput){
     else {
             console.log(searchInput);
             if (searchHistory.length >= 8){
+                // add item to beginning of saved array
                 searchHistory.unshift(searchInput);
-                console.log("add to beginning");
                 // remove last item from array
                 searchHistory.pop();
             }
             else {
+                // add item to end of saved array
                 searchHistory.push(searchInput);
             }
             console.log(searchHistory);
@@ -341,7 +341,6 @@ function useCurrentLocation(lat, lon){
   })
   // go into returned object and pull city name using lat and lon, set  to variable
   .then(function (data) {
-      console.log(data);
       // get city name from this api call
     cityName = data.name;
     // pass lat and lon for next api call
