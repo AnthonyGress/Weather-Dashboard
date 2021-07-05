@@ -298,8 +298,8 @@ function successCallback (position) {
     var lat = parseFloat(position.coords.latitude);
     var lon = parseFloat(position.coords.longitude);
     // TODO format lat and lon to 4 decimals
-    lat.toLocaleString(undefined, { minimumFractionDigits: 4 })
-    lon.toLocaleString(undefined, { minimumFractionDigits: 4 })
+    lat.toFixed(4);
+    lon.toFixed(4);
     getWeather(lat, lon);
     console.log(lat, lon);
 }
