@@ -248,7 +248,7 @@ function fillForecastData (){
         var dateEl = document.createElement("div");
         var iconCode = weatherInfo.daily[i+1].weather[0].icon;
         var unixDate = weatherInfo.daily[i+1].dt;
-        var iconUrl = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png";
+        var iconUrl = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png";
         // assign classes
         dateEl.setAttribute("class", "date fw-bold");
         iconEl.setAttribute("class", "icon");
