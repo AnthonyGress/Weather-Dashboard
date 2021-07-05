@@ -177,7 +177,7 @@ function fillCurrentData (){
     var cityNameEl = document.querySelector(".city");
     var currentIconEl = document.querySelector("#current-icon");
     var currentIconCode = weatherInfo.current.weather[0].icon;
-    var iconUrl = "http://openweathermap.org/img/wn/" + currentIconCode + "@2x.png";
+    var iconUrl = "https://openweathermap.org/img/wn/" + currentIconCode + "@2x.png";
     // TODO ADD MAP
     var mapEl = document.querySelector("#map");
     var mapUrl = "https://tile.openweathermap.org/map/precipitation_new/1/1/1.png?appid=" + unlock;
