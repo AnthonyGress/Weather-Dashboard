@@ -13,7 +13,8 @@ html, body {
     color: var(--font-color);
 }
 
-#uv-index-wrap{
+.fas {
+    margin-left: .5rem;
 }
 
 #uv-index {

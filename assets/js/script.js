@@ -1,5 +1,6 @@
 var searchBtn = document.querySelector('.searchBtn');
 var clearBtn = document.querySelector('.clearBtn');
+var locateBtn = document.querySelector('.locateBtn');
 // weatherInfo holds the JSON response from the weather API
 var weatherInfo, cityName, historyBtn;
 var historyEl = document.querySelector("#history");
@@ -152,8 +153,7 @@ function getWeather (lat, lon){
     fetch(weatherUrl)
     .then(function (response) {
       if (response.status == 404){
-          document.location.assign(url404);
-          // redirect
+          alert("404 error, page not found, check your input.");
       }
       else{
           return response.json();
@@ -289,7 +289,7 @@ function timeConverter(UNIX_timestamp){
     var formattedDate = month + '/' + date + '/' + year;
     return formattedDate;
   }
-//TODO Get current location from browser
+// Get current location from browser
 function getCurrentLocation (){
     console.log("requesting device location");
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
@@ -298,16 +298,31 @@ function getCurrentLocation (){
 function successCallback (position) {
     var lat = parseFloat(position.coords.latitude);
     var lon = parseFloat(position.coords.longitude);
+    // make lat and long 4 decimals for the api to work
     lat = lat.toFixed(4);
     lon = lon.toFixed(4);
     // get city name based on current location
     useCurrentLocation(lat, lon);
-    console.log(lat, lon);
 }
 // handle errors for get current location
 function errorCallback (error) {
-    console.log(error.message);
+    var errorDiv = document.querySelector(".error")
+    switch(error.code) {
+
+        case error.PERMISSION_DENIED:
+          errorDiv.innerHTML = "User denied the request for Geolocation."
+          break;
+        case error.POSITION_UNAVAILABLE:
+          errorDiv.innerHTML = "Location information is unavailable."
+          break;
+        case error.TIMEOUT:
+          errorDiv.innerHTML = "The request to get user location timed out."
+          break;
+        case error.UNKNOWN_ERROR:
+          errorDiv.innerHTML = "An unknown error occurred."
+          break;
 }
+};
 
 function useCurrentLocation(lat, lon){
     apiUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + unlock;
@@ -324,12 +339,14 @@ function useCurrentLocation(lat, lon){
         return response.json();
     }
   })
-  // go into returned object and pull the lat and long, set them to variables
+  // go into returned object and pull city name using lat and lon, set  to variable
   .then(function (data) {
       console.log(data);
+      // get city name from this api call
     cityName = data.name;
     // pass lat and lon for next api call
     getWeather(lat, lon);
+    handleAppendSingle(cityName);
   });
 };
 
@@ -356,7 +373,6 @@ function capitalFormat (searchInput){
     for (let i = 0; i < cap.length; i++) {
      cap[i] = cap[i][0].toUpperCase() + cap[i].substr(1);
     }
-    console.log(cap.join(' '));
     return(cap.join(' '));
 }
 
@@ -372,4 +388,5 @@ function handleClear () {
 
 searchBtn.addEventListener("click", handleSearch)
 clearBtn.addEventListener("click", handleClear)
+locateBtn.addEventListener("click", getCurrentLocation)
 historyEl.addEventListener("click", handleSearchHistoryClick)
