@@ -113,6 +113,7 @@ function getCoordinates(searchInput){
   .then(function (data) {
     lat = data.coord.lat;
     lon = data.coord.lon;
+    console.log(lat, lon);
     cityName = data.name;
     // pass lat and lon for next api call
     getWeather(lat, lon);
@@ -297,16 +298,41 @@ function getCurrentLocation (){
 function successCallback (position) {
     var lat = parseFloat(position.coords.latitude);
     var lon = parseFloat(position.coords.longitude);
-    // TODO format lat and lon to 4 decimals
     lat = lat.toFixed(4);
     lon = lon.toFixed(4);
-    getWeather(lat, lon);
+    // get city name based on current location
+    useCurrentLocation(lat, lon);
     console.log(lat, lon);
 }
 // handle errors for get current location
 function errorCallback (error) {
     console.log(error.message);
 }
+
+function useCurrentLocation(lat, lon){
+    apiUrl = "api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + unlock;
+    // make api call
+    fetch(apiUrl)
+  .then(function (response) {
+    if (response.status == 404){
+        // tell user the city that they typed was not found
+        //TODO make this a modal
+        alert("No city named found.")
+        return;
+    }
+    else{
+        return response.json();
+    }
+  })
+  // go into returned object and pull the lat and long, set them to variables
+  .then(function (data) {
+      console.log(data);
+    cityName = data.name;
+    // pass lat and lon for next api call
+    getWeather(lat, lon);
+  });
+};
+
 // click button on enter key in searchbox
 // Execute a function when the user presses a key on the keyboard while typing in the searchbox
 input.addEventListener("keydown", function(event) {
