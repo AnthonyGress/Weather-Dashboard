@@ -364,7 +364,7 @@ function useCurrentLocation(lat, lon){
 
 // click button on enter key in searchbox
 // Execute a function when the user presses a key on the keyboard while typing in the searchbox
-input.addEventListener("keydown", function(event) {
+input.addEventListener("keyup", function(event) {
   // Number 13 is the "Enter" key on the keyboard
   if (event.key === 'Enter') {
     // Cancel the default action, if needed
@@ -373,10 +373,16 @@ input.addEventListener("keydown", function(event) {
     searchBtn.click();
     // reset input text on search
     input.value = "";
+    //reset disable search button on search
+    searchBtn.disabled = true;
   }
   // they are typing something and did not hit enter
   else {
+      if (input.value.trim() != "")
     searchBtn.disabled = false;
+    else {
+        searchBtn.disabled = true;
+    }
   }
 });
 // formats input to capitalize the first letter of each word in the city. i.e new york -> New York
