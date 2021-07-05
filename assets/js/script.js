@@ -28,7 +28,6 @@ function getSearchHistory () {
 };
 
 function handleFillHistory (){
-    console.log(searchHistory);
     for (let i = 0; i < searchHistory.length && i < 8; i++) {
         var buttonDiv = document.createElement("div")
         var buttonEl = document.createElement("button");
@@ -113,7 +112,6 @@ function getCoordinates(searchInput){
   .then(function (data) {
     lat = data.coord.lat;
     lon = data.coord.lon;
-    console.log(lat, lon);
     cityName = data.name;
     // pass lat and lon for next api call
     getWeather(lat, lon);
@@ -126,7 +124,6 @@ function getCoordinates(searchInput){
     }
     // if city is not in the search history, push this search to the array
     else {
-            console.log(searchInput);
             if (searchHistory.length >= 8){
                 // add item to beginning of saved array
                 searchHistory.unshift(searchInput);
@@ -137,7 +134,6 @@ function getCoordinates(searchInput){
                 // add item to end of saved array
                 searchHistory.push(searchInput);
             }
-            console.log(searchHistory);
            // new function to add a single element so that the whole list array doesn't get rewritten to page
            handleAppendSingle(searchInput);
        }
@@ -291,7 +287,7 @@ function timeConverter(UNIX_timestamp){
   }
 // Get current location from browser
 function getCurrentLocation (){
-    console.log("requesting device location");
+    console.log("Requesting device location");
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
 }
 // grab coords from current location if given permission & location is available
@@ -346,6 +342,18 @@ function useCurrentLocation(lat, lon){
     // pass lat and lon for next api call
     getWeather(lat, lon);
     handleAppendSingle(cityName);
+    // add current location to search history
+    if (searchHistory.length >= 8){
+        // add item to beginning of saved array
+        searchHistory.unshift(cityName);
+        // remove last item from array
+        searchHistory.pop();
+    }
+    else {
+        // add item to end of saved array
+        searchHistory.push(cityName);
+    }
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
   });
 };
 
