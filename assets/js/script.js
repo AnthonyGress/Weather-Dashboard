@@ -341,20 +341,23 @@ function useCurrentLocation(lat, lon){
     cityName = data.name;
     // pass lat and lon for next api call
     getWeather(lat, lon);
-    handleAppendSingle(cityName);
     // add current location to search history
     if (searchHistory.includes(cityName)){
         // do nothing
-    }
-    else if (searchHistory.length >= 8){
-        // add item to beginning of saved array
-        searchHistory.unshift(cityName);
-        // remove last item from array
-        searchHistory.pop();
+        break;
     }
     else {
-        // add item to end of saved array
-        searchHistory.push(cityName);
+        if (searchHistory.length >= 8){
+            // add item to beginning of saved array
+            searchHistory.unshift(cityName);
+            // remove last item from array
+            searchHistory.pop();
+        }
+        else {
+            // add item to end of saved array
+            searchHistory.push(cityName);
+        }
+        handleAppendSingle(cityName);
     }
     localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
   });
