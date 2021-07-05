@@ -343,7 +343,10 @@ function useCurrentLocation(lat, lon){
     getWeather(lat, lon);
     handleAppendSingle(cityName);
     // add current location to search history
-    if (searchHistory.length >= 8){
+    if (searchHistory.includes(cityName)){
+        // do nothing
+    }
+    else if (searchHistory.length >= 8){
         // add item to beginning of saved array
         searchHistory.unshift(cityName);
         // remove last item from array
