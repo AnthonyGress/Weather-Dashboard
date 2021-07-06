@@ -165,6 +165,7 @@ function getWeather (lat, lon){
 
 function fillCurrentData (){
     // ****** CURRENT WEATHER ****** //
+    var cityWrap = document.querySelector("#city-wrapper");
     var temp = document.querySelector("#temp");
     var feels = document.querySelector("#feels-like");
     var wind = document.querySelector("#wind");
@@ -182,6 +183,8 @@ function fillCurrentData (){
     let cDay = currentDate.getDate();
     let cMonth = currentDate.getMonth() + 1;
     let cYear = currentDate.getFullYear();
+    // show all weather elements
+    cityWrap.classList.remove("invisible");
     // append city name to page
     cityNameEl.textContent = "Today in " + cityName;
     // create span to fill with current date
