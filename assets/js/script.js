@@ -1,17 +1,29 @@
 var searchBtn = document.querySelector('.searchBtn');
+var searchBtnNav = document.querySelector('.searchBtnNav');
 var clearBtn = document.querySelector('.clearBtn');
+var clearBtnNav = document.querySelector('.clearBtnNav');
 var locateBtn = document.querySelector('.locateBtn');
+var locateBtnNav = document.querySelector('.locateBtnNav');
 // weatherInfo holds the JSON response from the weather API
-var weatherInfo, cityName, historyBtn;
+var weatherInfo, cityName, historyBtn, isMobile;
 var historyEl = document.querySelector("#history");
 var toggle = false;
 var searchHistory = JSON.parse(localStorage.getItem("searchHistory"));
-var input = document.getElementById("search-input");
+var input = document.querySelector("#search-input");
 init();
 
 function init (){
     // try to autopopulate current weather when user arrives if they allow location access
     // better ux than blank site waiting to be filled with info
+    // test for user agen
+//     if( /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+//     isMobile = true;
+//     8 = 4;
+//     // open the navbar to prompt user to search
+//     document.querySelector(".navbar-toggler").click();
+//     // hide the desktop search
+//     document.querySelector(".navbar-toggler")
+//    }
     getCurrentLocation();
     getSearchHistory();
 };
@@ -34,7 +46,6 @@ function handleFillHistory (){
         buttonDiv.classList.add("d-grid", "mt-2");
         buttonEl.classList.add("btn", "btn-secondary", "historyBtn");
         buttonEl.dataset.city = searchHistory[i];
-        // TODO capitalize every word here for user readability
         buttonEl.textContent = searchHistory[i];
         historyEl.append(buttonDiv);
         buttonDiv.append(buttonEl);
@@ -165,6 +176,7 @@ function getWeather (lat, lon){
 
 function fillCurrentData (){
     // ****** CURRENT WEATHER ****** //
+    var cityWrap = document.querySelector("#city-wrapper");
     var temp = document.querySelector("#temp");
     var feels = document.querySelector("#feels-like");
     var wind = document.querySelector("#wind");
@@ -175,13 +187,15 @@ function fillCurrentData (){
     var currentIconCode = weatherInfo.current.weather[0].icon;
     var iconUrl = "https://openweathermap.org/img/wn/" + currentIconCode + "@2x.png";
     // TODO ADD MAP
-    var mapEl = document.querySelector("#map");
-    var mapUrl = "https://tile.openweathermap.org/map/precipitation_new/1/1/1.png?appid=" + unlock;
+    //var mapEl = document.querySelector("#map");
+    //var mapUrl = "https://tile.openweathermap.org/map/precipitation_new/1/1/1.png?appid=" + unlock;
     // TODO make its own function > get current date using js
     let currentDate = new Date();
     let cDay = currentDate.getDate();
     let cMonth = currentDate.getMonth() + 1;
     let cYear = currentDate.getFullYear();
+    //show container for all weather
+    cityWrap.classList.remove("invisible");
     // append city name to page
     cityNameEl.textContent = "Today in " + cityName;
     // create span to fill with current date
@@ -379,8 +393,10 @@ input.addEventListener("keyup", function(event) {
   // they are typing something and did not hit enter
   else {
       if (input.value.trim() != "")
+      // enable the button since there is text in the field
     searchBtn.disabled = false;
     else {
+        // no text in the field, disable search button
         searchBtn.disabled = true;
     }
   }
@@ -403,7 +419,9 @@ function handleClear () {
     location.reload();
 };
 
-
+searchBtnNav.addEventListener("click", handleSearch)
+clearBtnNav.addEventListener("click", handleClear)
+locateBtnNav.addEventListener("click", getCurrentLocation)
 searchBtn.addEventListener("click", handleSearch)
 clearBtn.addEventListener("click", handleClear)
 locateBtn.addEventListener("click", getCurrentLocation)

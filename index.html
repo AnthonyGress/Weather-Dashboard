@@ -13,16 +13,41 @@
 </head>
 <body>
     <header class="text-center">
-        <h1 class="py-3">Weather Dash</h1>
+        <h1 class="py-3 title">Weather Dash</h1>
+        <nav class="navbar navbar-expand-lg navbar-dark d-block d-sm-block d-md-none">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">Weather Dash</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="row">
+                    <div class="col-lg-3" id="search-wrapper">
+                        <h2>Search for a City:</h2>
+                            <div>
+                                <label for="search-input" class="form-label"></label>
+                                <input type="text" class="form-control search-input" id="search-input-nav" placeholder="Orlando">
+                                <div class="d-grid mt-2"><button class="btn btn-primary searchBtnNav" type="button" >Search</button></div>
+                                <div class="d-grid mt-2"><button class="btn btn-primary locateBtnNav" type="button">Use Current Location <i class="fas fa-map-marker-alt"></i></button></div>
+                                <div class="text-center error pt-2"></div>
+                             </div>
+                             <!-- hr break -->
+                             <div class="border-top border-2 border-secondary mt-3"></div>
+                             <h4 class=" text-center my-3 pb-2">Search History</h4>
+                            <!-- <div class="text-center my-3" id="history"></div> -->
+                            <div class="d-grid mt-2"><button class="btn btn-primary clearBtnNav" type="button">Clear History</button></div>
+              </div>
+            </div>
+          </nav>
     </header>
     <main class="container">
         <div class="row">
             <aside class="col-lg-3" id="search-wrapper">
                 <h2>Search for a City:</h2>
-                    <div class="search-box">
+                    <div>
                         <label for="search-input" class="form-label"></label>
-                        <input type="text" class="form-control" id="search-input" list="datalist" placeholder="Orlando">
-                        <div class="d-grid mt-2"><button class="btn btn-primary searchBtn" type="button" disabled>Search</button></div>
+                        <input type="text" class="form-control search-input" id="search-input" placeholder="Orlando">
+                        <div class="d-grid mt-2"><button class="btn btn-primary searchBtn" type="button" >Search</button></div>
                         <div class="d-grid mt-2"><button class="btn btn-primary locateBtn" type="button">Use Current Location <i class="fas fa-map-marker-alt"></i></button></div>
                         <div class="text-center error pt-2"></div>
                      </div>
@@ -33,10 +58,10 @@
                     <div class="d-grid mt-2"><button class="btn btn-primary clearBtn" type="button">Clear History</button></div>
 
             </aside>
-            <section id="city-wrapper" class="col-lg-9">
+            <section id="city-wrapper" class="col-lg-9 invisible">
                     <h2 class="city"></h2>
-                <div class="weather-conditions row">
-                    <div class="col-2"><img class="mx-auto d-block" id="current-icon" alt="" ></div>
+                <div class="weather-conditions card bg-dark row">
+                    <div class="col-2 icon-wrapper"><img class="mx-auto d-block" id="current-icon" alt="" ></div>
                    <!-- add map -->
                     <!-- <img src="" alt="rain map" id="map"> -->
                     <span id="temp-wrap" class="py-1">Temp: <span id="temp"></span></span>
@@ -58,8 +83,10 @@
             </section>
         </div>
     </main>
+    <!-- bootstrap js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="./assets/js/nav_close.js"></script>
     <script src="./assets/js/key.js"></script>
-    <script src="./assets/js/usaCities.js"></script>
     <script src="./assets/js/script.js"></script>
 </body>
 </html>

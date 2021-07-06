@@ -1,6 +1,7 @@
 :root{
     --bg-color: #181A1B;
-    --font-color: #D1CDC8;
+    --secondary-color: #D1CDC8;
+    --font-color: white;
 }
 
 header {
@@ -25,4 +26,33 @@ html, body {
 
 .card {
     padding: 1%;
+}
+
+@media screen and (max-width: 768px) {
+    
+    header {
+        border-radius: 0 0 4px 4px;
+        background-image: linear-gradient(to bottom right, rgba(255, 0, 0, 0.849), rgba(86, 2, 243, 0.884));
+    }
+
+    .row {
+        flex-direction: column;
+    }
+
+    #city-wrapper{
+        text-align: center;
+    }
+
+    .icon-wrapper{
+        width: 100%;
+    }
+
+    .card {
+        margin: 1rem 1rem;
+    }
+
+    .title {
+        display: none;
+    }
+
 }
