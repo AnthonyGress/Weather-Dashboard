@@ -1,5 +1,5 @@
 # Weather Dashboard
-A simple weather app using the open weather API and JavaScript. It can use either a city name or your current location to give you some useful weather information!
+A simple weather app using the open weather API and JavaScript. It was bootstrapped using the bootstrap 5 css framework and also uses some customs css as well. It can use either a city name or your current location to give you some useful weather information!
 
 ## Live Site
 Click the link to check out the app in action https://techx-guy.github.io/Weather-Dashboard/
